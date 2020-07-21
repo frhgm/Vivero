@@ -128,29 +128,29 @@ namespace Vivero
 
             if (Estacion().Temporada.Estacion.Equals("Verano"))
             {
-                minimo = 70;
-                maximo = 85;
+                minimo = 10;
+                maximo = 40;
                 sector.Humedad = _random.Next(minimo, maximo);
                 txtHumedad.Text = _random.Next(minimo, maximo).ToString();
             }
             else if (Estacion().Temporada.Estacion.Equals("Otono"))
             {
-                minimo = 60;
-                maximo = 75;
+                minimo = 40;
+                maximo = 50;
                 sector.Humedad = _random.Next(minimo, maximo);
                 txtHumedad.Text = _random.Next(minimo, maximo).ToString();
             }
             else if (Estacion().Temporada.Estacion.Equals("Invierno"))
             {
-                minimo = 45;
+                minimo = 50;
                 maximo = 60;
                 sector.Humedad = _random.Next(minimo, maximo);
                 txtHumedad.Text = _random.Next(minimo, maximo).ToString();
             }
             else if (Estacion().Temporada.Estacion.Equals("Primavera"))
             {
-                minimo = 60;
-                maximo = 75;
+                minimo = 30;
+                maximo = 40;
                 sector.Humedad = _random.Next(minimo, maximo);
                 txtHumedad.Text = _random.Next(minimo, maximo).ToString();
             }
@@ -168,9 +168,63 @@ namespace Vivero
             sector.Temporada.Estacion = Estacion().Temporada.Estacion;
             sector.Horario = Hora().Horario;
             sector.Temperatura.Actual = TemperaturaActual().Actual;
-            sector.Humedad = HumedadActual().Humedad;
+            sector.Humedad = CalorExtremo();
             sector.Pronostico = "Soleado";
             return sector;
+        }
+
+        protected double CalorExtremo()
+        {
+            double humedad = RecuperarDatos().Humedad;
+            //VERANO
+            if (RecuperarDatos().Temporada.Estacion.Equals("Verano"))
+            {
+                if(RecuperarDatos().Humedad < 30)
+                {
+                    humedad = humedad * 1.25;
+                }
+                else
+                {
+                    humedad = RecuperarDatos().Humedad;
+                }
+            }
+            //OTOÑO
+            if (RecuperarDatos().Temporada.Estacion.Equals("Otono"))
+            {
+                if (RecuperarDatos().Humedad < 40)
+                {
+                    humedad = humedad * 1.25;
+                }
+                else
+                {
+                    humedad = RecuperarDatos().Humedad;
+                }
+            }
+            //INVIERNO
+            if (RecuperarDatos().Temporada.Estacion.Equals("Invierno"))
+            {
+                if (RecuperarDatos().Humedad < 60)
+                {
+                    humedad = humedad * 1.25;
+                }
+                else
+                {
+                    humedad = RecuperarDatos().Humedad;
+                }
+            }
+            //PRIMAVERA
+            if (RecuperarDatos().Temporada.Estacion.Equals("Primavera"))
+            {
+                if (RecuperarDatos().Humedad < 40)
+                {
+                    humedad = humedad * 1.25;
+                }
+                else
+                {
+                    humedad = RecuperarDatos().Humedad;
+                }
+            }
+            return humedad;
         }
 
         protected void Sector()
