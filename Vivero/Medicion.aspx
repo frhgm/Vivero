@@ -26,11 +26,15 @@
                     <asp:Label runat="server" ID="lblHumedad" Text="Humedad"></asp:Label>
                     <asp:TextBox runat="server" Enabled="false" ID="txtHumedad" Placeholder="humedad" CssClass="form-control"></asp:TextBox>
                 </div>
+                <div class="form-group">
+                    <asp:Label runat="server" ID="lblPronostico" Text="Pronostico"></asp:Label>
+                    <asp:TextBox runat="server" Enabled="false" ID="txtPronostico" Placeholder="Pronostico" CssClass="form-control"></asp:TextBox>
+                </div>
                     
              </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <asp:Button runat="server" ID="btnMedir" OnClick="btnMedir_Click" Text="Medir" CssClass="btn btn-primary" />
             </div>
         </div>

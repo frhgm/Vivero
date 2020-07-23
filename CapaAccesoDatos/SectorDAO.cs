@@ -40,11 +40,12 @@ namespace CapaLogicaNegocio
                 con = Conexion.getInstance().ConexionBD();
                 cmd = new SqlCommand("spRegistrarMedicion", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@prmHorario", objSector.Horario.ToString("t"));
+                cmd.Parameters.AddWithValue("@prmHorario", objSector.Horario.ToString("HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@prmTemporada", objSector.Temporada.Estacion);
                 cmd.Parameters.AddWithValue("@prmTemperatura", objSector.Temperatura.Actual);
                 cmd.Parameters.AddWithValue("@prmHumedad", objSector.Humedad);
                 cmd.Parameters.AddWithValue("@prmPronostico", objSector.Pronostico);
+                cmd.Parameters.AddWithValue("@prmRegado", objSector.Regado);
 
                 con.Open();
                 var filas = cmd.ExecuteNonQuery();

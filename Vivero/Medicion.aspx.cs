@@ -10,9 +10,9 @@ using System.Web.Script.Serialization;
 using Microsoft.Ajax.Utilities;
 using CapaLogicaNegocio;
 using System.Data;
+using System.Threading;
 using System.Data.SqlClient;
 using System.Configuration;
-
 namespace Vivero
 {
     public partial class Medicion : System.Web.UI.Page
@@ -20,14 +20,50 @@ namespace Vivero
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Run();
         }
 
+        internal void Run()
+        {
+            int seconds = 10000;
+            var timer = new System.Threading.Timer(TimerMethod,
+                                  null,
+                                  0,
+                                  seconds);
+        }
 
-
-        protected Sector Estacion()
+        private void TimerMethod(object o)
         {
             
+            //System.Diagnostics.Debug.WriteLine(DateTime.Now);
+            Sector();
+            //Page.Response.Write("<script>console.log(' msg ');</script>");
+        }
+
+        public int temperaturaAleatoria;
+        public double humedadAleatoria;
+
+
+
+        public string GenerarPronostico()
+        {
+            string[] pronostico = new string[5];
+            int indice;
+            Random random = new Random();
+
+            pronostico[0] = "Soleado";
+            pronostico[1] = "Nublado";
+            pronostico[2] = "Lloviendo";
+            pronostico[3] = "Parcial";
+            pronostico[4] = "Tormenta";
+
+            indice = random.Next(0, 4);
+            txtPronostico.Text = pronostico[indice];
+            return pronostico[indice];
+        }
+        public Sector Estacion()
+        {
+
             DateTime inicioVerano = new DateTime(2020, 01, 01);
             DateTime terminoVerano = new DateTime(2020, 03, 31);
 
@@ -69,8 +105,23 @@ namespace Vivero
 
             return sector;
         }
+        public int randomTemperatura(int minimo, int maximo)
+        {
+            Random _random = new Random();
+            temperaturaAleatoria = _random.Next(minimo, maximo);
 
-        protected Sector Hora()
+            return temperaturaAleatoria;
+        }
+
+        public double randomHumedad(int minimo, int maximo)
+        {
+            Random _random = new Random();
+            humedadAleatoria = _random.Next(minimo, maximo);
+
+            return humedadAleatoria;
+        }
+
+        public Sector Hora()
         {
             Sector sector = new Sector();
 
@@ -79,50 +130,50 @@ namespace Vivero
             return sector;
         }
 
-        protected Temperatura TemperaturaActual()
+        public Temperatura TemperaturaActual()
         {
             int minimo;
             int maximo;
             Random _random = new Random();
             Temperatura temperatura = new Temperatura();
-            
 
-            if (Estacion().Temporada.Estacion.Equals("Verano")){
+
+            if (Estacion().Temporada.Estacion.Equals("Verano"))
+            {
                 minimo = 17;
                 maximo = 32;
-                temperatura.Actual = _random.Next(minimo, maximo);
-                txtTemperatura.Text = _random.Next(minimo, maximo).ToString();
+                temperatura.Actual = randomTemperatura(minimo,maximo);
+                txtTemperatura.Text = temperaturaAleatoria.ToString();
             }
             else if (Estacion().Temporada.Estacion.Equals("Otono"))
             {
                 minimo = 13;
                 maximo = 20;
-                temperatura.Actual = _random.Next(minimo, maximo);
-                txtTemperatura.Text = _random.Next(minimo, maximo).ToString();
+                temperatura.Actual = randomTemperatura(minimo, maximo);
+                txtTemperatura.Text = temperaturaAleatoria.ToString();
             }
             else if (Estacion().Temporada.Estacion.Equals("Invierno"))
             {
                 minimo = 5;
                 maximo = 17;
-                temperatura.Actual = _random.Next(minimo, maximo);
-                txtTemperatura.Text = _random.Next(minimo, maximo).ToString();
+                temperatura.Actual = randomTemperatura(minimo, maximo);
+                txtTemperatura.Text = temperaturaAleatoria.ToString();
             }
             else if (Estacion().Temporada.Estacion.Equals("Primavera"))
             {
                 minimo = 16;
                 maximo = 26;
-                temperatura.Actual = _random.Next(minimo, maximo);
-                txtTemperatura.Text = _random.Next(minimo, maximo).ToString();
+                temperatura.Actual = randomTemperatura(minimo, maximo);
+                txtTemperatura.Text = temperaturaAleatoria.ToString();
             }
 
             return temperatura;
         }
 
-        protected Sector HumedadActual()
+        public Sector HumedadActual()
         {
             int minimo;
             int maximo;
-            Random _random = new Random();
             Sector sector = new Sector();
 
 
@@ -130,106 +181,156 @@ namespace Vivero
             {
                 minimo = 10;
                 maximo = 40;
-                sector.Humedad = _random.Next(minimo, maximo);
-                txtHumedad.Text = _random.Next(minimo, maximo).ToString();
+                sector.Humedad = randomHumedad(minimo, maximo);
+                txtHumedad.Text = humedadAleatoria.ToString();
             }
             else if (Estacion().Temporada.Estacion.Equals("Otono"))
             {
                 minimo = 40;
                 maximo = 50;
-                sector.Humedad = _random.Next(minimo, maximo);
-                txtHumedad.Text = _random.Next(minimo, maximo).ToString();
+                sector.Humedad = randomHumedad(minimo, maximo);
+                txtHumedad.Text = humedadAleatoria.ToString();
             }
             else if (Estacion().Temporada.Estacion.Equals("Invierno"))
             {
                 minimo = 50;
                 maximo = 60;
-                sector.Humedad = _random.Next(minimo, maximo);
-                txtHumedad.Text = _random.Next(minimo, maximo).ToString();
+                sector.Humedad = randomHumedad(minimo, maximo);
+                txtHumedad.Text = humedadAleatoria.ToString();
             }
             else if (Estacion().Temporada.Estacion.Equals("Primavera"))
             {
                 minimo = 30;
                 maximo = 40;
-                sector.Humedad = _random.Next(minimo, maximo);
-                txtHumedad.Text = _random.Next(minimo, maximo).ToString();
+                sector.Humedad = randomHumedad(minimo, maximo);
+                txtHumedad.Text = humedadAleatoria.ToString();
             }
+            
             return sector;
         }
-        protected void btnMedir_Click(object sender, EventArgs e)
+
+        public void btnMedir_Click(object sender, EventArgs e)
         {
             Sector();
         }
 
-        protected Sector RecuperarDatos()
+        public Sector RecuperarDatos()
         {
             Sector sector = new Sector();
 
             sector.Temporada.Estacion = Estacion().Temporada.Estacion;
             sector.Horario = Hora().Horario;
             sector.Temperatura.Actual = TemperaturaActual().Actual;
-            sector.Humedad = CalorExtremo();
-            sector.Pronostico = "Soleado";
+            sector.Humedad -= 5;
+            sector.Humedad = HumedadActual().Humedad;//RevisionHumedad().Humedad;
+            sector.Pronostico = GenerarPronostico();
+            sector.Regado = RevisionHumedad().Regado;//FueRegado()
+            return sector;
+        }
+        /*
+        protected bool FueRegado()
+        {
+            bool estado;
+            if (RevisionHumedad().Humedad > 50)
+            {
+                estado = true;
+            }
+            else
+            {
+                estado = false;
+            }
+
+            return estado;
+        }
+        */
+        public Sector RevisionHumedad()
+        {
+            Sector sector = new Sector();
+            bool estado = false;
+            double humedad = sector.Humedad;
+            //VERANO
+            if (Estacion().Temporada.Estacion.Equals("Verano"))
+            {
+                if (humedad > 20)
+                {
+                    humedad *= 1.25;
+                    estado = true;
+                    sector.Humedad = humedad;
+                    sector.Regado = estado;
+                    txtHumedad.Text = humedad.ToString();
+                }
+                else
+                {
+                    humedad = HumedadActual().Humedad;
+                    sector.Humedad = humedad;
+                    sector.Regado = estado;
+                }
+            }
+
+            //OTOÑO
+            if (Estacion().Temporada.Estacion.Equals("Otono"))
+            {
+                if (humedad > 30)
+                {
+                    humedad *= 1.25;
+                    estado = true;
+                    sector.Humedad = humedad;
+                    sector.Regado = estado;
+                    txtHumedad.Text = humedad.ToString();
+                }
+                else
+                {
+                    humedad = HumedadActual().Humedad;
+                    sector.Humedad = humedad;
+                    sector.Regado = estado;
+                }
+            }
+
+            //INVIERNO
+            if (Estacion().Temporada.Estacion.Equals("Invierno"))
+            {
+                if (humedad > 50)
+                {
+                    humedad *= 1.25;
+                    estado = true;
+                    sector.Humedad = humedad;
+                    sector.Regado = estado;
+                    txtHumedad.Text = humedad.ToString();
+                }
+                else
+                {
+                    humedad = HumedadActual().Humedad;
+                    sector.Humedad = humedad;
+                    sector.Regado = estado;
+                }
+            }
+
+            //PRIMAVERA
+            if (Estacion().Temporada.Estacion.Equals("Primavera"))
+            {
+                if (humedad > 30)
+                {
+                    humedad *= 1.25;
+                    estado = true;
+                    sector.Humedad = humedad;
+                    sector.Regado = estado;
+                    txtHumedad.Text = humedad.ToString();
+                }
+                else
+                {
+                    humedad = HumedadActual().Humedad;
+                    sector.Humedad = humedad;
+                    sector.Regado = estado;
+                }
+            }
+
             return sector;
         }
 
-        protected double CalorExtremo()
-        {
-            double humedad = RecuperarDatos().Humedad;
-            //VERANO
-            if (RecuperarDatos().Temporada.Estacion.Equals("Verano"))
-            {
-                if(RecuperarDatos().Humedad < 30)
-                {
-                    humedad = humedad * 1.25;
-                }
-                else
-                {
-                    humedad = RecuperarDatos().Humedad;
-                }
-            }
-            //OTOÑO
-            if (RecuperarDatos().Temporada.Estacion.Equals("Otono"))
-            {
-                if (RecuperarDatos().Humedad < 40)
-                {
-                    humedad = humedad * 1.25;
-                }
-                else
-                {
-                    humedad = RecuperarDatos().Humedad;
-                }
-            }
-            //INVIERNO
-            if (RecuperarDatos().Temporada.Estacion.Equals("Invierno"))
-            {
-                if (RecuperarDatos().Humedad < 60)
-                {
-                    humedad = humedad * 1.25;
-                }
-                else
-                {
-                    humedad = RecuperarDatos().Humedad;
-                }
-            }
-            //PRIMAVERA
-            if (RecuperarDatos().Temporada.Estacion.Equals("Primavera"))
-            {
-                if (RecuperarDatos().Humedad < 40)
-                {
-                    humedad = humedad * 1.25;
-                }
-                else
-                {
-                    humedad = RecuperarDatos().Humedad;
-                }
-            }
-            return humedad;
-        }
-
-        protected void Sector()
+        public void Sector()
         {
             var objSector = RecuperarDatos();
+
 
             var response = SectorDAO.getInstance().RegistrarMediciones(objSector);
 
@@ -240,14 +341,11 @@ namespace Vivero
             }
             else
             {
-                lblMensaje.Text = "Revise los datos ingresados por favor, es posible que haya ingresado algo incorrectamente";
+                lblMensaje.Text =
+                    "Revise los datos ingresados por favor, es posible que haya ingresado algo incorrectamente";
                 panelMensajes.CssClass = "alert-warning text-center";
             }
         }
-
-
-
-        
 
     }
 }
