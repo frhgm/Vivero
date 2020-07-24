@@ -87,6 +87,24 @@ namespace Vivero
         protected global::System.Web.UI.WebControls.TextBox txtTemperatura;
 
         /// <summary>
+        /// lblRegado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblRegado;
+
+        /// <summary>
+        /// txtRegado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtRegado;
+
+        /// <summary>
         /// lblHumedad control.
         /// </summary>
         /// <remarks>
@@ -96,13 +114,31 @@ namespace Vivero
         protected global::System.Web.UI.WebControls.Label lblHumedad;
 
         /// <summary>
-        /// txtHumedad control.
+        /// txtHumedad_Inicial control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtHumedad;
+        protected global::System.Web.UI.WebControls.TextBox txtHumedad_Inicial;
+
+        /// <summary>
+        /// lblFinal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFinal;
+
+        /// <summary>
+        /// txtHumedad_Final control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtHumedad_Final;
 
         /// <summary>
         /// lblPronostico control.
@@ -121,14 +157,5 @@ namespace Vivero
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPronostico;
-
-        /// <summary>
-        /// btnMedir control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMedir;
     }
 }

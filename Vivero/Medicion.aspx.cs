@@ -20,12 +20,13 @@ namespace Vivero
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            Response.AppendHeader("Refresh", "3");
             Run();
         }
 
         internal void Run()
         {
-            int seconds = 10000;
+            int seconds = 5000;
             var timer = new System.Threading.Timer(TimerMethod,
                                   null,
                                   0,
@@ -34,14 +35,15 @@ namespace Vivero
 
         private void TimerMethod(object o)
         {
-            
-            //System.Diagnostics.Debug.WriteLine(DateTime.Now);
             Sector();
-            //Page.Response.Write("<script>console.log(' msg ');</script>");
+            MostrarDatos();
         }
+
+        
 
         public int temperaturaAleatoria;
         public double humedadAleatoria;
+        List<double> registroHumedad = new List<double>();
 
 
 
@@ -181,38 +183,38 @@ namespace Vivero
             {
                 minimo = 10;
                 maximo = 40;
-                sector.Humedad = randomHumedad(minimo, maximo);
-                txtHumedad.Text = humedadAleatoria.ToString();
+                sector.Humedad_Inicial = randomHumedad(minimo, maximo);
+                txtHumedad_Inicial.Text = sector.Humedad_Inicial.ToString();
+                registroHumedad.Add(sector.Humedad_Inicial);
             }
             else if (Estacion().Temporada.Estacion.Equals("Otono"))
             {
                 minimo = 40;
-                maximo = 50;
-                sector.Humedad = randomHumedad(minimo, maximo);
-                txtHumedad.Text = humedadAleatoria.ToString();
+                maximo = 70;
+                sector.Humedad_Inicial = randomHumedad(minimo, maximo);
+                txtHumedad_Inicial.Text = sector.Humedad_Inicial.ToString();
+                registroHumedad.Add(sector.Humedad_Inicial);
             }
             else if (Estacion().Temporada.Estacion.Equals("Invierno"))
             {
-                minimo = 50;
-                maximo = 60;
-                sector.Humedad = randomHumedad(minimo, maximo);
-                txtHumedad.Text = humedadAleatoria.ToString();
+                minimo = 70;
+                maximo = 100;
+                sector.Humedad_Inicial = randomHumedad(minimo, maximo);
+                txtHumedad_Inicial.Text = sector.Humedad_Inicial.ToString();
+                registroHumedad.Add(sector.Humedad_Inicial);
             }
             else if (Estacion().Temporada.Estacion.Equals("Primavera"))
             {
-                minimo = 30;
-                maximo = 40;
-                sector.Humedad = randomHumedad(minimo, maximo);
-                txtHumedad.Text = humedadAleatoria.ToString();
+                minimo = 20;
+                maximo = 50;
+                sector.Humedad_Inicial = randomHumedad(minimo, maximo);
+                txtHumedad_Inicial.Text = sector.Humedad_Inicial.ToString();
+                registroHumedad.Add(sector.Humedad_Inicial);
             }
             
             return sector;
         }
-
-        public void btnMedir_Click(object sender, EventArgs e)
-        {
-            Sector();
-        }
+//
 
         public Sector RecuperarDatos()
         {
@@ -221,105 +223,112 @@ namespace Vivero
             sector.Temporada.Estacion = Estacion().Temporada.Estacion;
             sector.Horario = Hora().Horario;
             sector.Temperatura.Actual = TemperaturaActual().Actual;
-            sector.Humedad -= 5;
-            sector.Humedad = HumedadActual().Humedad;//RevisionHumedad().Humedad;
+            sector.Humedad_Inicial = RevisionHumedad().Humedad_Inicial;
+            sector.Humedad_Final = RevisionHumedad().Humedad_Final;
             sector.Pronostico = GenerarPronostico();
-            sector.Regado = RevisionHumedad().Regado;//FueRegado()
+            sector.Regado = RevisionHumedad().Regado;
             return sector;
         }
-        /*
-        protected bool FueRegado()
+       
+        public void MostrarDatos()
         {
-            bool estado;
-            if (RevisionHumedad().Humedad > 50)
-            {
-                estado = true;
-            }
-            else
-            {
-                estado = false;
-            }
+            txtTemporada.Text = RecuperarDatos().Temporada.Estacion;
+            txtHorario.Text = RecuperarDatos().Horario.ToString();
+            txtTemperatura.Text = RecuperarDatos().Temperatura.Actual.ToString();
+            txtHumedad_Inicial.Text = RecuperarDatos().Humedad_Inicial.ToString();
+            txtHumedad_Final.Text = RecuperarDatos().Humedad_Final.ToString();
+            txtPronostico.Text = RecuperarDatos().Pronostico;
+            txtRegado.Text = RecuperarDatos().Regado.ToString();
 
-            return estado;
         }
-        */
+
         public Sector RevisionHumedad()
         {
             Sector sector = new Sector();
             bool estado = false;
-            double humedad = sector.Humedad;
+            double humedad_inicial = HumedadActual().Humedad_Inicial;
+            double humedad_final = sector.Humedad_Final;
             //VERANO
             if (Estacion().Temporada.Estacion.Equals("Verano"))
             {
-                if (humedad > 20)
+                if (humedad_inicial < 20)
                 {
-                    humedad *= 1.25;
+                    humedad_final = humedad_inicial * 1.25;
                     estado = true;
-                    sector.Humedad = humedad;
+                    sector.Humedad_Inicial = humedad_inicial;
+                    sector.Humedad_Final = humedad_final;
+                    txtHumedad_Inicial.Text = humedad_inicial.ToString();
+                    txtHumedad_Final.Text = humedad_final.ToString();
+
+                    txtRegado.Text = estado.ToString();
                     sector.Regado = estado;
-                    txtHumedad.Text = humedad.ToString();
                 }
                 else
                 {
-                    humedad = HumedadActual().Humedad;
-                    sector.Humedad = humedad;
+                    humedad_inicial = HumedadActual().Humedad_Inicial;
+                    humedad_final = humedad_inicial;
+                    sector.Humedad_Inicial = humedad_inicial;
+                    sector.Humedad_Final = humedad_final;
+                    txtHumedad_Inicial.Text = humedad_inicial.ToString();
+                    txtHumedad_Final.Text = humedad_final.ToString();
+
+                    txtRegado.Text = estado.ToString();
                     sector.Regado = estado;
                 }
             }
-
             //OTOÑO
             if (Estacion().Temporada.Estacion.Equals("Otono"))
             {
-                if (humedad > 30)
-                {
-                    humedad *= 1.25;
-                    estado = true;
-                    sector.Humedad = humedad;
-                    sector.Regado = estado;
-                    txtHumedad.Text = humedad.ToString();
-                }
-                else
-                {
-                    humedad = HumedadActual().Humedad;
-                    sector.Humedad = humedad;
-                    sector.Regado = estado;
-                }
+                humedad_inicial = HumedadActual().Humedad_Inicial;
+                sector.Humedad_Inicial = humedad_inicial;
+                sector.Humedad_Final = humedad_inicial;
+                txtHumedad_Inicial.Text = sector.Humedad_Inicial.ToString();
+                txtHumedad_Final.Text = sector.Humedad_Final.ToString();
+
+                txtRegado.Text = estado.ToString();
+                sector.Regado = estado;
             }
 
             //INVIERNO
             if (Estacion().Temporada.Estacion.Equals("Invierno"))
             {
-                if (humedad > 50)
-                {
-                    humedad *= 1.25;
-                    estado = true;
-                    sector.Humedad = humedad;
-                    sector.Regado = estado;
-                    txtHumedad.Text = humedad.ToString();
-                }
-                else
-                {
-                    humedad = HumedadActual().Humedad;
-                    sector.Humedad = humedad;
-                    sector.Regado = estado;
-                }
-            }
 
+                humedad_inicial = HumedadActual().Humedad_Inicial;
+                sector.Humedad_Inicial = humedad_inicial;
+                sector.Humedad_Final = humedad_inicial;
+                txtHumedad_Inicial.Text = sector.Humedad_Inicial.ToString();
+                txtHumedad_Final.Text = sector.Humedad_Final.ToString();
+
+                txtRegado.Text = estado.ToString();
+                sector.Regado = estado;
+                
+            }
+            
             //PRIMAVERA
             if (Estacion().Temporada.Estacion.Equals("Primavera"))
             {
-                if (humedad > 30)
+                if (humedad_inicial < 30)
                 {
-                    humedad *= 1.25;
+                    humedad_final = humedad_inicial * 1.25;
                     estado = true;
-                    sector.Humedad = humedad;
+                    sector.Humedad_Inicial = humedad_inicial;
+                    sector.Humedad_Final = humedad_final;
+                    txtHumedad_Inicial.Text = humedad_inicial.ToString();
+                    txtHumedad_Final.Text = humedad_final.ToString();
+
+                    txtRegado.Text = estado.ToString();
                     sector.Regado = estado;
-                    txtHumedad.Text = humedad.ToString();
                 }
                 else
                 {
-                    humedad = HumedadActual().Humedad;
-                    sector.Humedad = humedad;
+                    humedad_inicial = HumedadActual().Humedad_Inicial;
+                    humedad_final = humedad_inicial;
+                    sector.Humedad_Inicial = humedad_inicial;
+                    sector.Humedad_Final = humedad_final;
+                    txtHumedad_Inicial.Text = humedad_inicial.ToString();
+                    txtHumedad_Final.Text = humedad_final.ToString();
+
+                    txtRegado.Text = estado.ToString();
                     sector.Regado = estado;
                 }
             }
@@ -336,7 +345,7 @@ namespace Vivero
 
             if (response)
             {
-                lblMensaje.Text = "Datos registrados";
+                lblMensaje.Text = "Datos registrados con una temperatura de: C°" + objSector.Temperatura;
                 panelMensajes.CssClass = "alert-success text-center";
             }
             else

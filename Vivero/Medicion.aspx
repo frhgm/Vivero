@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Medicion.aspx.cs" Inherits="Vivero.Medicion" %>
+﻿<%@ Page Title=""  Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Medicion.aspx.cs" Inherits="Vivero.Medicion" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <section>
         <asp:Panel runat="server" ID="panelMensajes">
@@ -8,36 +8,39 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <asp:Label runat="server" ID="lblHorario" Text="Horario"></asp:Label>
-                    <asp:TextBox runat="server" Enabled="false" ID="txtHorario" Placeholder="hora" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox runat="server" Enabled="false" ID="txtHorario" AutoPostBack="true" Placeholder="hora" CssClass="form-control"></asp:TextBox>
 
                 </div>
                 <div class="form-group">
                     <asp:Label runat="server" ID="lblTemporada" Text="Temporada"></asp:Label>
-                    <asp:TextBox runat="server" Enabled="false" ID="txtTemporada" Placeholder="temporada" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox runat="server" Enabled="false" ID="txtTemporada" AutoPostBack="true" Placeholder="temporada" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <asp:Label runat="server" ID="lblTemperatura" Text="Temperatura"></asp:Label>
+                    <asp:TextBox runat="server" Enabled="false" ID="txtTemperatura" AutoPostBack="true" Placeholder="temperatura" CssClass="form-control"></asp:TextBox>
                 </div>
                     
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <asp:Label runat="server" ID="lblTemperatura" Text="Temperatura"></asp:Label>
-                    <asp:TextBox runat="server" Enabled="false" ID="txtTemperatura" Placeholder="temperatura" CssClass="form-control"></asp:TextBox>
+                    <asp:Label runat="server" ID="lblRegado" Text="Regado?"></asp:Label>
+                    <asp:TextBox runat="server" Enabled="false" ID="txtRegado" AutoPostBack="true" Placeholder="regado?" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
-                    <asp:Label runat="server" ID="lblHumedad" Text="Humedad"></asp:Label>
-                    <asp:TextBox runat="server" Enabled="false" ID="txtHumedad" Placeholder="humedad" CssClass="form-control"></asp:TextBox>
+                    <asp:Label runat="server" ID="lblHumedad" Text="Humedad Inicial"></asp:Label>
+                    <asp:TextBox runat="server" Enabled="false" ID="txtHumedad_Inicial" AutoPostBack="true" Placeholder="humedad inicial" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <asp:Label runat="server" ID="lblFinal" Text="Humedad Final"></asp:Label>
+                    <asp:TextBox runat="server" Enabled="false" ID="txtHumedad_Final" AutoPostBack="true" Placeholder="humedad final" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
                     <asp:Label runat="server" ID="lblPronostico" Text="Pronostico"></asp:Label>
-                    <asp:TextBox runat="server" Enabled="false" ID="txtPronostico" Placeholder="Pronostico" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox runat="server" Enabled="false" ID="txtPronostico" AutoPostBack="true" Placeholder="Pronostico" CssClass="form-control"></asp:TextBox>
                 </div>
                     
              </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <asp:Button runat="server" ID="btnMedir" OnClick="btnMedir_Click" Text="Medir" CssClass="btn btn-primary" />
             </div>
-        </div>
 
     </section>
     

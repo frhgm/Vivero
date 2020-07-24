@@ -43,7 +43,8 @@ namespace CapaLogicaNegocio
                 cmd.Parameters.AddWithValue("@prmHorario", objSector.Horario.ToString("HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@prmTemporada", objSector.Temporada.Estacion);
                 cmd.Parameters.AddWithValue("@prmTemperatura", objSector.Temperatura.Actual);
-                cmd.Parameters.AddWithValue("@prmHumedad", objSector.Humedad);
+                cmd.Parameters.AddWithValue("@prmHumedad_Inicial", objSector.Humedad_Inicial);
+                cmd.Parameters.AddWithValue("@prmHumedad_Final", objSector.Humedad_Final);
                 cmd.Parameters.AddWithValue("@prmPronostico", objSector.Pronostico);
                 cmd.Parameters.AddWithValue("@prmRegado", objSector.Regado);
 
